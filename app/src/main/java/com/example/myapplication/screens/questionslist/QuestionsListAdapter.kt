@@ -5,45 +5,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
-import com.example.myapplication.R
 
-class QuestionsListAdapter(context: Context, private val onQuestionClickListener: OnQuestionClickListener) :
-    ArrayAdapter<Question>(context, android.R.layout.list_content) {
+class QuestionsListAdapter(
+	context: Context,
+	private val onQuestionClickListener: OnQuestionClickListener
+) :
+	ArrayAdapter<Question>(context, android.R.layout.list_content),
+	QuestionListItemViewMVc.Listener {
 
-    private val layoutInflater= LayoutInflater.from(context)
+	override fun onQuestionClicked(question: Question) {
+		onQuestionClickListener.onQuestionClickListener(question)
+	}
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val rootView: View
-        if (convertView == null) {
-            rootView = layoutInflater.inflate(
-                R.layout.question_list_item,
-                parent,
-                false
-            )
-            val questionsViewHolder = QuestionsViewHolder()
-            questionsViewHolder.textView = rootView.findViewById(R.id.question_title)
-            rootView.tag = questionsViewHolder
-        } else {
-            rootView = convertView
-        }
-        val question = getItem(position)
-        (rootView.tag as QuestionsViewHolder).textView?.text = question?.title
-        rootView.setOnClickListener {
-            question?.let {
-                onQuestionClickListener.onQuestionClickListener(it)
-            }
-        }
-        return rootView
-    }
+	private val layoutInflater = LayoutInflater.from(context)
 
-    interface OnQuestionClickListener {
-        fun onQuestionClickListener(question: Question)
-    }
+	override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+		val rootView: View
+		if (convertView == null) {
+			val questionListItemViewMVc: QuestionListItemViewMVc =
+				QuestionListItemViewMVcImpl(layoutInflater)
+			rootView = questionListItemViewMVc.rootView
+			rootView.tag = questionListItemViewMVc
+			questionListItemViewMVc.registersListener(this)
+		} else {
+			rootView = convertView
+		}
+		getItem(position)?.let {
+			(rootView.tag as QuestionListItemViewMVc).bindCusetion(it)
+		}
+		return rootView
+	}
 
-    class QuestionsViewHolder {
-        var textView : TextView? = null
-    }
+	interface OnQuestionClickListener {
+		fun onQuestionClickListener(question: Question)
+	}
 }
 
 

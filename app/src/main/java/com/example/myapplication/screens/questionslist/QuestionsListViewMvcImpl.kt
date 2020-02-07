@@ -26,9 +26,9 @@ class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
     private fun getContext() = rootView.context
 
     override fun onQuestionClickListener(question: Question) {
-       for (l in listeners){
-           l.onQuestionClicked(question)
-       }
+        for (l in listeners) {
+            l.onQuestionClicked(question)
+        }
     }
 
     override fun bindQuestions(list: List<Question>) {
