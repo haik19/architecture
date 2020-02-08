@@ -1,45 +1,41 @@
 package com.example.myapplication.screens.questionslist
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.screens.common.Question
 
-class QuestionsListAdapter(
-	context: Context,
-	private val onQuestionClickListener: OnQuestionClickListener
-) :
-	ArrayAdapter<Question>(context, android.R.layout.list_content),
-	QuestionListItemViewMVc.Listener {
+class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickListener) :
+	RecyclerView.Adapter<QuestionsListAdapter.QuestionViewHolder>(), QuestionListItemViewMVc.Listener {
+
+	private var questionsList = mutableListOf<Question>()
+
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
+		val questionListItemViewMVc  = QuestionListItemViewMVcImpl(LayoutInflater.from(parent.context))
+		questionListItemViewMVc.registersListener(this)
+		return QuestionViewHolder(questionListItemViewMVc)
+	}
+
+	override fun getItemCount() = questionsList.size
+
+	override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
+		holder.questionMvcView.bindCusetion(questionsList[position])
+	}
 
 	override fun onQuestionClicked(question: Question) {
 		onQuestionClickListener.onQuestionClickListener(question)
 	}
 
-	private val layoutInflater = LayoutInflater.from(context)
-
-	override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-		val rootView: View
-		if (convertView == null) {
-			val questionListItemViewMVc: QuestionListItemViewMVc =
-				QuestionListItemViewMVcImpl(layoutInflater)
-			rootView = questionListItemViewMVc.rootView
-			rootView.tag = questionListItemViewMVc
-			questionListItemViewMVc.registersListener(this)
-		} else {
-			rootView = convertView
-		}
-		getItem(position)?.let {
-			(rootView.tag as QuestionListItemViewMVc).bindCusetion(it)
-		}
-		return rootView
+	fun bindQuestions(list : List<Question>) {
+		questionsList.addAll(list)
+		notifyDataSetChanged()
 	}
 
 	interface OnQuestionClickListener {
 		fun onQuestionClickListener(question: Question)
 	}
+
+	class QuestionViewHolder(val questionMvcView : QuestionListItemViewMVc) : RecyclerView.ViewHolder(questionMvcView.rootView)
 }
 
 
