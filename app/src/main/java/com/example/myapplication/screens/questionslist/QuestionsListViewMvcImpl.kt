@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ListView
 import com.example.myapplication.R
+import com.example.myapplication.screens.common.Question
 
 
 class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :

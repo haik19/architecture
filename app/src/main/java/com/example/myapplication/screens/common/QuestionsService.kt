@@ -1,4 +1,4 @@
-package com.example.myapplication.screens.questionslist
+package com.example.myapplication.screens.common
 
 import retrofit2.Call
 import retrofit2.http.GET

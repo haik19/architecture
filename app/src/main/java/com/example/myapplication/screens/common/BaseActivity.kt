@@ -1,4 +1,4 @@
-package com.example.myapplication.screens.questionslist
+package com.example.myapplication.screens.common
 
 import androidx.fragment.app.FragmentActivity
 

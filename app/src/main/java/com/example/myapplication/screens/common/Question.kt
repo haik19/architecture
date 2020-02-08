@@ -1,4 +1,4 @@
-package com.example.myapplication.screens.questionslist
+package com.example.myapplication.screens.common
 
 import com.google.gson.annotations.SerializedName
 
