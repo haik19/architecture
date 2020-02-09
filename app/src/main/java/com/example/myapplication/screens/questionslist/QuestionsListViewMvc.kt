@@ -3,7 +3,7 @@ package com.example.myapplication.screens.questionslist
 import android.view.View
 import com.example.myapplication.screens.common.Question
 
-interface IQuestionsListViewMvcI {
+interface QuestionsListViewMvc {
 
 	interface Listener {
 		fun onQuestionClicked(question: Question)

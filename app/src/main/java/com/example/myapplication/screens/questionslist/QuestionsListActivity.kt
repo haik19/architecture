@@ -12,13 +12,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class QuestionsListActivity : BaseActivity(), IQuestionsListViewMvcI.Listener {
+class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("https://api.stackexchange.com/")
         .build()
-    private lateinit var questionsMvcViewImpl: IQuestionsListViewMvcI
+    private lateinit var questionsMvcViewImpl: QuestionsListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

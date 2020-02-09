@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.screens.common.Question
 
 class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickListener) :
-	RecyclerView.Adapter<QuestionsListAdapter.QuestionViewHolder>(), QuestionListItemViewMVc.Listener {
+	RecyclerView.Adapter<QuestionsListAdapter.QuestionViewHolder>(), QuestionListItemViewMvc.Listener {
 
 	private var questionsList = mutableListOf<Question>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
-		val questionListItemViewMVc  = QuestionListItemViewMVcImpl(LayoutInflater.from(parent.context))
+		val questionListItemViewMVc  = QuestionListItemViewMvcImpl(LayoutInflater.from(parent.context))
 		questionListItemViewMVc.registersListener(this)
 		return QuestionViewHolder(questionListItemViewMVc)
 	}
@@ -35,7 +35,7 @@ class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickL
 		fun onQuestionClickListener(question: Question)
 	}
 
-	class QuestionViewHolder(val questionMvcView : QuestionListItemViewMVc) : RecyclerView.ViewHolder(questionMvcView.rootView)
+	class QuestionViewHolder(val questionMvcView : QuestionListItemViewMvc) : RecyclerView.ViewHolder(questionMvcView.rootView)
 }
 
 

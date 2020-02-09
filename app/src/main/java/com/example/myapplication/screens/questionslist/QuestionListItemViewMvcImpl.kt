@@ -6,11 +6,11 @@ import android.widget.TextView
 import com.example.myapplication.R
 import com.example.myapplication.screens.common.Question
 
-class QuestionListItemViewMVcImpl(layoutInflater: LayoutInflater) : QuestionListItemViewMVc{
+class QuestionListItemViewMvcImpl(layoutInflater: LayoutInflater) : QuestionListItemViewMvc {
 
 	override val rootView: View = layoutInflater.inflate(R.layout.question_list_item, null, false)
 	private val textTitle: TextView = findViewById(R.id.question_title)
-	private val listeners = mutableListOf<QuestionListItemViewMVc.Listener>()
+	private val listeners = mutableListOf<QuestionListItemViewMvc.Listener>()
 
 	private lateinit var question: Question
 	init {
@@ -26,11 +26,11 @@ class QuestionListItemViewMVcImpl(layoutInflater: LayoutInflater) : QuestionList
 		textTitle.text = question.title
 	}
 
-	override fun registersListener(listener: QuestionListItemViewMVc.Listener) {
+	override fun registersListener(listener: QuestionListItemViewMvc.Listener) {
 		listeners.add(listener)
 	}
 
-	override fun unregisterListener(listener: QuestionListItemViewMVc.Listener) {
+	override fun unregisterListener(listener: QuestionListItemViewMvc.Listener) {
 		listeners.remove(listener)
 	}
 

@@ -9,12 +9,12 @@ import com.example.myapplication.screens.common.Question
 
 
 class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
-    QuestionsListAdapter.OnQuestionClickListener, IQuestionsListViewMvcI {
+    QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private var questionsRecyclerView: RecyclerView
     private var questionsListAdapter : QuestionsListAdapter
     override val rootView: View = layoutInflater.inflate(R.layout.layout_questions_list, null, false)
-    private val listeners = mutableListOf<IQuestionsListViewMvcI.Listener>()
+    private val listeners = mutableListOf<QuestionsListViewMvc.Listener>()
 
     init {
         questionsRecyclerView = findViewById(R.id.questions_list_view)
@@ -37,11 +37,11 @@ class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
         questionsListAdapter.bindQuestions(list)
     }
 
-    override fun registersListener(listener: IQuestionsListViewMvcI.Listener) {
+    override fun registersListener(listener: QuestionsListViewMvc.Listener) {
         listeners.add(listener)
     }
 
-    override fun unregisterListener(listener: IQuestionsListViewMvcI.Listener) {
+    override fun unregisterListener(listener: QuestionsListViewMvc.Listener) {
         listeners.remove(listener)
     }
 }
