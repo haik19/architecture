@@ -1,4 +1,4 @@
-package com.example.myapplication.screens.common
+package com.example.myapplication.screens.model
 
 import retrofit2.Call
 import retrofit2.http.GET

@@ -1,9 +1,9 @@
 package com.example.myapplication.screens.questionslist
 
-import android.view.View
-import com.example.myapplication.screens.common.Question
+import com.example.myapplication.screens.common.ViewMvc
+import com.example.myapplication.screens.model.Question
 
-interface QuestionsListViewMvc {
+interface QuestionsListViewMvc : ViewMvc {
 
 	interface Listener {
 		fun onQuestionClicked(question: Question)
@@ -12,5 +12,4 @@ interface QuestionsListViewMvc {
 	fun bindQuestions(list: List<Question>)
 	fun registersListener(listener: Listener)
 	fun unregisterListener(listener: Listener)
-	val rootView: View
 }

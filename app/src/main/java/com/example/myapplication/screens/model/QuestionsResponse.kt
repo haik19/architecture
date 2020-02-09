@@ -1,6 +1,5 @@
-package com.example.myapplication.screens.common
+package com.example.myapplication.screens.model
 
-import com.example.myapplication.screens.common.Question
 import com.google.gson.annotations.SerializedName
 
 data class QuestionsResponse(@SerializedName("items") val list: List<Question>)

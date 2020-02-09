@@ -3,7 +3,7 @@ package com.example.myapplication.screens.questionslist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.screens.common.Question
+import com.example.myapplication.screens.model.Question
 
 class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickListener) :
 	RecyclerView.Adapter<QuestionsListAdapter.QuestionViewHolder>(), QuestionListItemViewMvc.Listener {

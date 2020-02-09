@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.screens.common.Question
+import com.example.myapplication.screens.model.Question
 
 
 class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
