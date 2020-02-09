@@ -7,6 +7,7 @@ interface QuestionsListViewMvc : ViewMvc {
 
 	interface Listener {
 		fun onQuestionClicked(question: Question)
+		fun mutaChannel()
 	}
 
 	fun bindQuestions(list: List<Question>)

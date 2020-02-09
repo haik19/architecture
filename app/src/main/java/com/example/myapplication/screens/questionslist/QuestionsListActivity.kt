@@ -57,6 +57,10 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
         Toast.makeText(this, question.title, Toast.LENGTH_SHORT).show()
     }
 
+    override fun mutaChannel() {
+        Toast.makeText(this, "Muted!!", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         questionsMvcViewImpl.unregisterListener(this)

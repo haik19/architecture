@@ -2,6 +2,7 @@ package com.example.myapplication.screens.questionslist
 
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -12,11 +13,19 @@ class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
     QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private var questionsRecyclerView: RecyclerView
+    private var muteChannel : TextView
     private var questionsListAdapter : QuestionsListAdapter
     override val rootView: View = layoutInflater.inflate(R.layout.layout_questions_list, null, false)
     private val listeners = mutableListOf<QuestionsListViewMvc.Listener>()
 
     init {
+        muteChannel = findViewById(R.id.mute)
+        muteChannel.setOnClickListener {
+            for (l in listeners) {
+                l.mutaChannel()
+            }
+        }
+
         questionsRecyclerView = findViewById(R.id.questions_list_view)
         questionsRecyclerView.layoutManager = LinearLayoutManager(getContext())
         questionsListAdapter = QuestionsListAdapter(this)
