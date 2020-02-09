@@ -7,7 +7,7 @@ interface QuestionListItemViewMvc {
 	interface Listener{
 		fun onQuestionClicked(question: Question)
 	}
-	fun bindCusetion(question: Question)
+	fun bindQuestions(question: Question)
 	fun registersListener(listener: Listener)
 	fun unregisterListener(listener: Listener)
 	val rootView: View

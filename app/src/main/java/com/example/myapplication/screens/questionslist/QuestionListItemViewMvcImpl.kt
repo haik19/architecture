@@ -21,7 +21,7 @@ class QuestionListItemViewMvcImpl(layoutInflater: LayoutInflater) : QuestionList
 		}
 	}
 
-	override fun bindCusetion(question: Question) {
+	override fun bindQuestions(question: Question) {
 		this.question = question
 		textTitle.text = question.title
 	}

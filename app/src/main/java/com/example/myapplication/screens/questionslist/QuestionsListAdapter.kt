@@ -19,7 +19,7 @@ class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickL
 	override fun getItemCount() = questionsList.size
 
 	override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
-		holder.questionMvcView.bindCusetion(questionsList[position])
+		holder.questionMvcView.bindQuestions(questionsList[position])
 	}
 
 	override fun onQuestionClicked(question: Question) {
