@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.example.myapplication.R
+import com.example.myapplication.screens.common.BaseViewMvc
 import com.example.myapplication.screens.model.Question
 
-class QuestionListItemViewMvcImpl(layoutInflater: LayoutInflater) : QuestionListItemViewMvc {
+class QuestionListItemViewMvcImpl(layoutInflater: LayoutInflater) : BaseViewMvc(),
+	QuestionListItemViewMvc {
 
-	override val rootView: View = layoutInflater.inflate(R.layout.question_list_item, null, false)
+	override var rootView: View = layoutInflater.inflate(R.layout.question_list_item, null, false)
 	private val textTitle: TextView = findViewById(R.id.question_title)
 	private val listeners = mutableListOf<QuestionListItemViewMvc.Listener>()
 
@@ -33,7 +35,5 @@ class QuestionListItemViewMvcImpl(layoutInflater: LayoutInflater) : QuestionList
 	override fun unregisterListener(listener: QuestionListItemViewMvc.Listener) {
 		listeners.remove(listener)
 	}
-
-	private fun <T : View> findViewById(id : Int): T = rootView.findViewById(id)
 
 }

@@ -6,20 +6,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.screens.common.BaseViewMvc
 import com.example.myapplication.screens.model.Question
 
 
-class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
+class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) : BaseViewMvc(),
     QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private var questionsRecyclerView: RecyclerView
-    private var muteChannel : TextView
     private var questionsListAdapter : QuestionsListAdapter
-    override val rootView: View = layoutInflater.inflate(R.layout.layout_questions_list, null, false)
+    override var rootView: View = layoutInflater.inflate(R.layout.layout_questions_list, null, false)
+    private var muteChannel : TextView = findViewById(R.id.mute)
     private val listeners = mutableListOf<QuestionsListViewMvc.Listener>()
 
     init {
-        muteChannel = findViewById(R.id.mute)
         muteChannel.setOnClickListener {
             for (l in listeners) {
                 l.mutaChannel()
@@ -31,10 +31,6 @@ class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) :
         questionsListAdapter = QuestionsListAdapter(this)
         questionsRecyclerView.adapter = questionsListAdapter
     }
-
-    private fun <T : View> findViewById(id: Int): T = rootView.findViewById(id)
-
-    private fun getContext() = rootView.context
 
     override fun onQuestionClickListener(question: Question) {
         for (l in listeners) {
