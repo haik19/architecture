@@ -6,18 +6,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.screens.common.BaseObservableViewMvc
 import com.example.myapplication.screens.common.BaseViewMvc
 import com.example.myapplication.screens.model.Question
 
 
-class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) : BaseViewMvc(),
+class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(),
     QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private var questionsRecyclerView: RecyclerView
     private var questionsListAdapter : QuestionsListAdapter
     override var rootView: View = layoutInflater.inflate(R.layout.layout_questions_list, null, false)
     private var muteChannel : TextView = findViewById(R.id.mute)
-    private val listeners = mutableListOf<QuestionsListViewMvc.Listener>()
 
     init {
         muteChannel.setOnClickListener {
@@ -40,13 +40,5 @@ class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) : BaseViewMvc(),
 
     override fun bindQuestions(list: List<Question>) {
         questionsListAdapter.bindQuestions(list)
-    }
-
-    override fun registersListener(listener: QuestionsListViewMvc.Listener) {
-        listeners.add(listener)
-    }
-
-    override fun unregisterListener(listener: QuestionsListViewMvc.Listener) {
-        listeners.remove(listener)
     }
 }
