@@ -5,64 +5,65 @@ import android.widget.Toast
 import com.example.myapplication.screens.common.BaseActivity
 import com.example.myapplication.screens.model.Question
 import com.example.myapplication.screens.model.QuestionsResponse
-import com.example.myapplication.screens.model.QuestionsService
+import com.example.myapplication.screens.model.StackOverFlowApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("https://api.stackexchange.com/")
-        .build()
-    private lateinit var questionsMvcViewImpl: QuestionsListViewMvc
+	private lateinit var questionsMvcViewImpl: QuestionsListViewMvc
+	private lateinit var stackOverFlowApi: StackOverFlowApi
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        questionsMvcViewImpl = QuestionsListViewMvcImpl(layoutInflater)
-        questionsMvcViewImpl.registersListener(this)
-        setContentView(questionsMvcViewImpl.rootView)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		questionsMvcViewImpl = compositionRoot().getViewMvcFactory().getQuestionListViewMvc(null)
+		questionsMvcViewImpl.registersListener(this)
 
-        retrofit.create<QuestionsService>(QuestionsService::class.java).getQuestions("stackoverflow")
-            .enqueue(object : Callback<QuestionsResponse> {
-                override fun onResponse(
-                    call: Call<QuestionsResponse>,
-                    response: Response<QuestionsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            bindQuestionsList(it)
-                        }
-                    }
-                }
+		stackOverFlowApi = compositionRoot().getStackOverFlowApi()
 
-                override fun onFailure(call: Call<QuestionsResponse>, t: Throwable) {
-                    //no need yet
-                }
-            })
+		setContentView(questionsMvcViewImpl.rootView)
     }
 
-    fun bindQuestionsList(questionsResponse: QuestionsResponse) {
-        val list = mutableListOf<Question>()
-        for (q in questionsResponse.list) {
-            //for test
-        }
-        questionsMvcViewImpl.bindQuestions(questionsResponse.list)
-    }
+	override fun onStart() {
+		super.onStart()
+		fetchQuestions()
+	}
 
-    override fun onQuestionClicked(question: Question) {
-        Toast.makeText(this, question.title, Toast.LENGTH_SHORT).show()
-    }
+	private fun fetchQuestions() {
+		stackOverFlowApi.getQuestions("stackoverflow")
+			.enqueue(object : Callback<QuestionsResponse> {
+				override fun onResponse(
+					call: Call<QuestionsResponse>,
+					response: Response<QuestionsResponse>
+				) {
+					if (response.isSuccessful) {
+						response.body()?.let {
+							bindQuestionsList(it)
+						}
+					}
+				}
 
-    override fun mutaChannel() {
-        Toast.makeText(this, "Muted!!", Toast.LENGTH_SHORT).show()
-    }
+				override fun onFailure(call: Call<QuestionsResponse>, t: Throwable) {
+					//no need yet
+				}
+			})
+	}
 
-    override fun onDestroy() {
-        super.onDestroy()
-        questionsMvcViewImpl.unregisterListener(this)
-    }
+	fun bindQuestionsList(questionsResponse: QuestionsResponse) {
+		questionsMvcViewImpl.bindQuestions(questionsResponse.list)
+	}
+
+	override fun onQuestionClicked(question: Question) {
+		Toast.makeText(this, question.title, Toast.LENGTH_SHORT).show()
+	}
+
+	override fun mutaChannel() {
+		Toast.makeText(this, "Muted!!", Toast.LENGTH_SHORT).show()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		questionsMvcViewImpl.unregisterListener(this)
+	}
 }

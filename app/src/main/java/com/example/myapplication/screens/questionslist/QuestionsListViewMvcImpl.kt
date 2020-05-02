@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.screens.common.BaseObservableViewMvc
-import com.example.myapplication.screens.common.BaseViewMvc
 import com.example.myapplication.screens.model.Question
 
 
-class QuestionsListViewMvcImpl(layoutInflater: LayoutInflater) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(),
+class QuestionsListViewMvcImpl(
+    layoutInflater: LayoutInflater,
+    val parent: View?
+) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(),
     QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private var questionsRecyclerView: RecyclerView
