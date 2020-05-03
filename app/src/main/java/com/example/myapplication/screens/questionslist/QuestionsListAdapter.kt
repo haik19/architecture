@@ -1,17 +1,20 @@
 package com.example.myapplication.screens.questionslist
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.screens.common.ViewMvcFactory
 import com.example.myapplication.screens.model.Question
 
-class QuestionsListAdapter(private val onQuestionClickListener: OnQuestionClickListener) :
+class QuestionsListAdapter(
+	private val onQuestionClickListener: OnQuestionClickListener,
+	val viewMvcFactory: ViewMvcFactory
+) :
 	RecyclerView.Adapter<QuestionsListAdapter.QuestionViewHolder>(), QuestionListItemViewMvc.Listener {
 
 	private var questionsList = mutableListOf<Question>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
-		val questionListItemViewMVc  = QuestionListItemViewMvcImpl(LayoutInflater.from(parent.context))
+		val questionListItemViewMVc  = viewMvcFactory.getQuestionListItemViewMvc(parent)
 		questionListItemViewMVc.registersListener(this)
 		return QuestionViewHolder(questionListItemViewMVc)
 	}

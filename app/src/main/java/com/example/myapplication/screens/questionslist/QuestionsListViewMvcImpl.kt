@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.screens.common.BaseObservableViewMvc
+import com.example.myapplication.screens.common.ViewMvcFactory
 import com.example.myapplication.screens.model.Question
 
 
 class QuestionsListViewMvcImpl(
     layoutInflater: LayoutInflater,
-    val parent: View?
+    val parent: View?,
+    val viewMvcFactory: ViewMvcFactory
 ) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(),
     QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
@@ -30,7 +32,7 @@ class QuestionsListViewMvcImpl(
 
         questionsRecyclerView = findViewById(R.id.questions_list_view)
         questionsRecyclerView.layoutManager = LinearLayoutManager(getContext())
-        questionsListAdapter = QuestionsListAdapter(this)
+        questionsListAdapter = QuestionsListAdapter(this, viewMvcFactory)
         questionsRecyclerView.adapter = questionsListAdapter
     }
 
