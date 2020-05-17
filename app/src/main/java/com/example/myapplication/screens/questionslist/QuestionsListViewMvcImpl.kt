@@ -9,7 +9,6 @@ import com.example.myapplication.R
 import com.example.myapplication.screens.common.BaseObservableViewMvc
 import com.example.myapplication.screens.common.ViewMvcFactory
 import com.example.myapplication.screens.model.Question
-import com.example.myapplication.screens.model.QuestionSchema
 
 
 class QuestionsListViewMvcImpl(

@@ -1,15 +1,18 @@
 package com.example.myapplication.screens.questionslist
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import com.example.myapplication.screens.QuestionDetailsActivity
 import com.example.myapplication.screens.common.BaseActivity
 import com.example.myapplication.screens.model.Question
-import com.example.myapplication.screens.model.QuestionSchema
 import com.example.myapplication.screens.model.QuestionsListResponseSchema
 import com.example.myapplication.screens.model.StackOverFlowApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+const val QUESTION_ID_KEY = "question_id"
 
 class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
@@ -24,7 +27,7 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 		stackOverFlowApi = compositionRoot().getStackOverFlowApi()
 
 		setContentView(questionsMvcViewImpl.rootView)
-    }
+	}
 
 	override fun onStart() {
 		super.onStart()
@@ -60,7 +63,10 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 	}
 
 	override fun onQuestionClicked(question: Question) {
-		Toast.makeText(this, question.title, Toast.LENGTH_SHORT).show()
+		Intent(this, QuestionDetailsActivity::class.java).apply {
+			putExtra(QUESTION_ID_KEY, question.id)
+			startActivity(this)
+		}
 	}
 
 	override fun mutaChannel() {

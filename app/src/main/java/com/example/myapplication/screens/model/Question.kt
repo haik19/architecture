@@ -1,3 +1,3 @@
 package com.example.myapplication.screens.model
 
-data class Question(val id: String, val title: String)
+data class Question(val id: Int, val title: String)
