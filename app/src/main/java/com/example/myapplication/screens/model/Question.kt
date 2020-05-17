@@ -1,4 +1,3 @@
 package com.example.myapplication.screens.model
 
-class Question {
-}
+data class Question(val id: String, val title: String)

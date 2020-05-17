@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.myapplication.screens.common.BaseActivity
 import com.example.myapplication.screens.model.Question
-import com.example.myapplication.screens.model.QuestionsResponse
-import com.example.myapplication.screens.model.StackOverFlowApi
+import com.example.myapplication.screens.model.QuestionSchema
+import com.example.myapplication.screens.model.QuestionsListResponseSchema
+import com.example.myapplication.screens.model.StackOverFlowApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,7 +14,7 @@ import retrofit2.Response
 class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
 	private lateinit var questionsMvcViewImpl: QuestionsListViewMvc
-	private lateinit var stackOverFlowApi: StackOverFlowApi
+	private lateinit var stackOverFlowApi: StackOverFlowApiService
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -31,11 +32,11 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 	}
 
 	private fun fetchQuestions() {
-		stackOverFlowApi.getQuestions("stackoverflow")
-			.enqueue(object : Callback<QuestionsResponse> {
+		stackOverFlowApi.fetchQuestions(60)
+			.enqueue(object : Callback<QuestionsListResponseSchema> {
 				override fun onResponse(
-					call: Call<QuestionsResponse>,
-					response: Response<QuestionsResponse>
+					call: Call<QuestionsListResponseSchema>,
+					response: Response<QuestionsListResponseSchema>
 				) {
 					if (response.isSuccessful) {
 						response.body()?.let {
@@ -44,14 +45,18 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 					}
 				}
 
-				override fun onFailure(call: Call<QuestionsResponse>, t: Throwable) {
+				override fun onFailure(call: Call<QuestionsListResponseSchema>, t: Throwable) {
 					//no need yet
 				}
 			})
 	}
 
-	fun bindQuestionsList(questionsResponse: QuestionsResponse) {
-		questionsMvcViewImpl.bindQuestions(questionsResponse.list)
+	fun bindQuestionsList(questionsResponse: QuestionsListResponseSchema) {
+		val questionsList = mutableListOf<Question>()
+		questionsResponse.list?.forEach {
+			questionsList.add(Question(it.id, it.title))
+		}
+		questionsMvcViewImpl.bindQuestions(questionsList)
 	}
 
 	override fun onQuestionClicked(question: Question) {

@@ -1,6 +1,6 @@
 package com.example.myapplication.screens.common.dependancyinjection
 
-import com.example.myapplication.screens.model.StackOverFlowApi
+import com.example.myapplication.screens.model.StackOverFlowApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,5 +16,5 @@ class CompositionRoot {
 		return retroFit!!
 	}
 
-	fun getStackOverFlowApi(): StackOverFlowApi = getRetroFit().create(StackOverFlowApi::class.java)
+	fun getStackOverFlowApi(): StackOverFlowApiService = getRetroFit().create(StackOverFlowApiService::class.java)
 }
