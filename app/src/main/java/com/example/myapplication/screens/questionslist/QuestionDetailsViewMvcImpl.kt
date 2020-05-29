@@ -20,7 +20,7 @@ class QuestionDetailsViewMvcImpl(layoutInflater: LayoutInflater) : QuestionDetai
 	override fun bindQuestionDetails(questionDetails: QuestionDetails) {
 		questionDetails.apply {
 			titleView.text = title
-			questionsDescriptionView.text = Html.fromHtml(body, Html.FROM_HTML_MODE_COMPACT)
+			questionsDescriptionView.text = body
 
 		}
 	}

@@ -6,60 +6,32 @@ import android.widget.Toast
 import com.example.myapplication.screens.QuestionDetailsActivity
 import com.example.myapplication.screens.common.BaseActivity
 import com.example.myapplication.screens.model.Question
-import com.example.myapplication.screens.model.QuestionsListResponseSchema
-import com.example.myapplication.screens.model.StackOverFlowApiService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 const val QUESTION_ID_KEY = "question_id"
 
-class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
+class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener,FetchQuestionsListUseCase.QuestionsListStatusListener {
 
 	private lateinit var questionsMvcViewImpl: QuestionsListViewMvc
-	private lateinit var stackOverFlowApi: StackOverFlowApiService
+	private lateinit var fetchListsUseCase: FetchQuestionsListUseCase
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		questionsMvcViewImpl = compositionRoot().getViewMvcFactory().getQuestionListViewMvc(null)
 		questionsMvcViewImpl.registersListener(this)
-
-		stackOverFlowApi = compositionRoot().getStackOverFlowApi()
+		fetchListsUseCase = compositionRoot().getFetchQuestionsListUceCase()
 
 		setContentView(questionsMvcViewImpl.rootView)
 	}
 
 	override fun onStart() {
 		super.onStart()
-		fetchQuestions()
+		fetchListsUseCase.registersListener(this)
+		fetchListsUseCase.fetchQuestions()
 	}
 
-	private fun fetchQuestions() {
-		stackOverFlowApi.fetchQuestions(60)
-			.enqueue(object : Callback<QuestionsListResponseSchema> {
-				override fun onResponse(
-					call: Call<QuestionsListResponseSchema>,
-					response: Response<QuestionsListResponseSchema>
-				) {
-					if (response.isSuccessful) {
-						response.body()?.let {
-							bindQuestionsList(it)
-						}
-					}
-				}
-
-				override fun onFailure(call: Call<QuestionsListResponseSchema>, t: Throwable) {
-					//no need yet
-				}
-			})
-	}
-
-	fun bindQuestionsList(questionsResponse: QuestionsListResponseSchema) {
-		val questionsList = mutableListOf<Question>()
-		questionsResponse.list?.forEach {
-			questionsList.add(Question(it.id, it.title))
-		}
-		questionsMvcViewImpl.bindQuestions(questionsList)
+	override fun onStop() {
+		super.onStop()
+		fetchListsUseCase.unregisterListener(this)
 	}
 
 	override fun onQuestionClicked(question: Question) {
@@ -76,5 +48,13 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 	override fun onDestroy() {
 		super.onDestroy()
 		questionsMvcViewImpl.unregisterListener(this)
+	}
+
+	override fun listFetchedSuccess(question: List<Question>) {
+		questionsMvcViewImpl.bindQuestions(question)
+	}
+
+	override fun listFetchedFailed() {
+		//no need yet
 	}
 }

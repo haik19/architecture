@@ -1,6 +1,7 @@
 package com.example.myapplication.screens.common.dependancyinjection
 
 import com.example.myapplication.screens.model.StackOverFlowApiService
+import com.example.myapplication.screens.questionslist.FetchQuestionsDetailsUseCase
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

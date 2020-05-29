@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.QuestionDetailsActivity" />
+        <activity android:name=".screens.ExceptionActivity" />
     </application>
 
 </manifest>

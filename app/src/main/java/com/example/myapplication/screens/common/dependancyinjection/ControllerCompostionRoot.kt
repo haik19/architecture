@@ -3,10 +3,16 @@ package com.example.myapplication.screens.common.dependancyinjection
 import android.app.Activity
 import android.view.LayoutInflater
 import com.example.myapplication.screens.common.ViewMvcFactory
+import com.example.myapplication.screens.questionslist.FetchQuestionsDetailsUseCase
+import com.example.myapplication.screens.questionslist.FetchQuestionsListUseCase
 
-class ControllerCompostionRoot(val compostionRoot: CompositionRoot, val activity: Activity) {
+class ControllerCompostionRoot(private val compositionRoot: CompositionRoot, private val activity: Activity) {
 
-	fun getStackOverFlowApi() = compostionRoot.getStackOverFlowApi()
+	private fun getStackOverFlowApi() = compositionRoot.getStackOverFlowApi()
+
+	fun getFetchQuestionDetailsUseCase() = FetchQuestionsDetailsUseCase(getStackOverFlowApi())
+
+	fun getFetchQuestionsListUceCase() = FetchQuestionsListUseCase(getStackOverFlowApi())
 
 	fun getLayoutInflater(): LayoutInflater = LayoutInflater.from(activity)
 

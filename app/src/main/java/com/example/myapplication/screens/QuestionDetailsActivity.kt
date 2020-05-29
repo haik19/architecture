@@ -1,50 +1,47 @@
 package com.example.myapplication.screens
 
 import android.os.Bundle
-import android.text.Html
 import com.example.myapplication.screens.common.BaseActivity
 import com.example.myapplication.screens.model.QuestionDetails
-import com.example.myapplication.screens.model.QuestionDetailsResponseSchema
+import com.example.myapplication.screens.questionslist.FetchQuestionsDetailsUseCase
 import com.example.myapplication.screens.questionslist.QUESTION_ID_KEY
 import com.example.myapplication.screens.questionslist.QuestionDetailsViewMvc
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class QuestionDetailsActivity : BaseActivity() {
+
+class QuestionDetailsActivity : BaseActivity(), FetchQuestionsDetailsUseCase.Listener {
+
 	private lateinit var detailsViw: QuestionDetailsViewMvc
+	private lateinit var fetchQuestionsDetailsUseCase: FetchQuestionsDetailsUseCase
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		val stackOverApi = compositionRoot().getStackOverFlowApi()
 		detailsViw = compositionRoot().getViewMvcFactory().getDetailsViewMvc()
+		fetchQuestionsDetailsUseCase = compositionRoot().getFetchQuestionDetailsUseCase()
 		setContentView(detailsViw.rootView)
-
-		val questionId = intent.getIntExtra(QUESTION_ID_KEY, 0)
-		stackOverApi.fetchQuestionDetails(questionId)
-			.enqueue(object : Callback<QuestionDetailsResponseSchema> {
-				override fun onFailure(call: Call<QuestionDetailsResponseSchema>, t: Throwable) {
-					detailsViw.hideProgress()
-				}
-
-				override fun onResponse(
-					call: Call<QuestionDetailsResponseSchema>,
-					response: Response<QuestionDetailsResponseSchema>
-				) {
-					response.takeIf { it.isSuccessful }?.body()?.let {
-						if (it.list.isNotEmpty()) {
-							it.list[0].apply {
-								detailsViw.bindQuestionDetails(QuestionDetails(id, title, body))
-							}
-						}
-					}
-					detailsViw.hideProgress()
-				}
-			})
 	}
 
 	override fun onStart() {
 		super.onStart()
 		detailsViw.showProgress()
+		fetchQuestionsDetailsUseCase.registersListener(this)
+		fetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(intent.getIntExtra(QUESTION_ID_KEY, 0))
+	}
+
+	override fun onStop() {
+		super.onStop()
+		fetchQuestionsDetailsUseCase.unregisterListener( this)
+	}
+
+	override fun onQuestionDetailsFetched(questionDetails: QuestionDetails) {
+		bindQuestionsDetails(questionDetails)
+	}
+
+	override fun onQuestionDetailsFetchFailed() {
+		detailsViw.hideProgress()
+	}
+
+	private fun bindQuestionsDetails(questionDetails: QuestionDetails) {
+		detailsViw.bindQuestionDetails(questionDetails)
+		detailsViw.hideProgress()
 	}
 }
